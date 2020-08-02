@@ -1,0 +1,30 @@
+fun  foo(a, b) {
+  print a + b;
+}
+
+// foo(1,2,4);
+// error Expected 2 arguments but got 3.
+
+fun hoist(a) {
+  print a + b;
+  if (a > 2) {
+    b = 2;
+  }
+  print a + b;
+}
+// hoist(1);
+// error no hoisting
+// Undefined variable 'b'.
+
+fun recurse_sum(memo, n) {
+  if (n == 0) {
+    return memo;
+  }
+  return recurse_sum(memo + n, n - 1);
+}
+
+// print recurse_sum(0, 963);
+// crashes
+// Exception in thread "main" java.lang.StackOverflowError
+print recurse_sum(0, 962);
+// ok
