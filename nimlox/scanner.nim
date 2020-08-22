@@ -1,5 +1,5 @@
 import token_type, token, errors
-import strutils, typeinfo
+import strutils, typeinfo, tables
 
 type
   Scanner* = ref object of RootObj
@@ -8,6 +8,24 @@ type
     start: int
     current: int
     line: int
+
+var keywords = initTable[string, TokenType]()
+keywords["and"] = AND
+keywords["class"] = CLASS
+keywords["else"] = ELSE
+keywords["false"] = FALSE
+keywords["for"] = FOR
+keywords["fun"] = FUN
+keywords["if"] = IF
+keywords["nil"] = NIL
+keywords["or"] = OR
+keywords["print"] = PRINT
+keywords["return"] = RETURN
+keywords["super"] = SUPER
+keywords["this"] = THIS
+keywords["true"] = TRUE
+keywords["var"] = VAR
+keywords["while"] = WHILE
 
 proc isAtEnd(scanner: Scanner): bool =
   scanner.current >= scanner.source.len()
@@ -69,6 +87,27 @@ proc string(scanner: Scanner) =
 proc isDigit(scanner: Scanner, c: char): bool =
   c >= '0' and c <= '9'
 
+proc isAlpha(scanner: Scanner, c: char): bool =
+  return (c >= 'a' and c <= 'z') or
+           (c >= 'A' and c <= 'Z') or
+            c == '_'
+
+proc isAlphaNumeric(scanner: Scanner, c: char): bool =
+  return scanner.isAlpha(c) or scanner.isDigit(c);
+
+proc identifier(scanner: Scanner) =
+  while scanner.isAlphaNumeric(scanner.peek()):
+    discard scanner.advance()
+
+  let text: string = scanner.source[scanner.start..(scanner.current - 1)]
+  let tt: TokenType = if keywords.hasKey(text):
+    keywords[text]
+  else:
+    IDENTIFIER
+
+  let nilLit: Lit = LIt(litKind: nilLit, nilLiteral: 0.0)
+  scanner.addToken(tt, nilLit)
+
 proc number(scanner: Scanner) =
   while scanner.isDigit(scanner.peek()):
     discard scanner.advance()
@@ -121,6 +160,8 @@ proc scanToken(scanner: Scanner) =
   else:
     if scanner.isDigit(c):
       scanner.number()
+    elif scanner.isAlpha(c):
+      scanner.identifier()
     else:
       error(scanner.line, "Unexpected character.");
 
