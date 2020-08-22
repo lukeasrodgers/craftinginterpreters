@@ -1,4 +1,5 @@
 import token_type, token, errors
+import strutils, typeinfo
 
 type
   Scanner* = ref object of RootObj
@@ -15,20 +16,15 @@ proc advance(scanner: Scanner): char =
   scanner.current += 1
   return scanner.source[scanner.current - 1]
 
-proc addToken(scanner: Scanner, tt: TokenType, literals: varargs[string]) =
-  var literal: string
-  if literals.len > 0:
-    literal = literals[0]
-  else:
-    literal = ""
-  
+proc addToken(scanner: Scanner, tt: TokenType, lit: Lit) =
+
   # echo "source: ", scanner.source
   # echo "source len: ", scanner.source.len
   # echo "start: ", scanner.start
   # echo "current: ", scanner.current
   let text: string = scanner.source[scanner.start..scanner.current-1]
   # echo "scanned ", text
-  scanner.tokens.add(Token(type: tt, lexeme: text, literal: literal, line: scanner.line))
+  scanner.tokens.add(Token(type: tt, lexeme: text, literal: lit, line: scanner.line))
 
 proc match(scanner: Scanner, expected: char): bool =
   if scanner.isAtEnd():
@@ -45,37 +41,93 @@ proc peek(scanner: Scanner): char =
   else:
     return scanner.source[scanner.current]
 
+proc peekNext(scanner: Scanner): char =
+  'c'
+
+
+proc string(scanner: Scanner) =
+  while scanner.peek() != '"' and not scanner.isAtEnd():
+    if scanner.peek() == '\n':
+      scanner.line += 1
+    discard scanner.advance()
+
+    # Unterminated string.
+  if scanner.isAtEnd():
+    error(scanner.line, "Unterminated string.")
+    return
+
+  # The closing ".
+  discard scanner.advance()
+
+  # Trim the surrounding quotes.
+  let value = scanner.source[(scanner.start + 1)..(scanner.current - 2)]
+  var lit: Lit
+  lit = Lit(litKind: litString, strLiteral: value)
+  scanner.addToken(STRING, lit)
+
+proc isDigit(scanner: Scanner, c: char): bool =
+  c >= '0' and c <= '9'
+
+proc number(scanner: Scanner) =
+  while scanner.isDigit(scanner.peek()):
+    discard scanner.advance()
+
+  # Look for a fractional part.
+  if (scanner.peek() == '.' and scanner.isDigit(scanner.peekNext())):
+    # Consume the "."
+    discard scanner.advance()
+
+    while scanner.isDigit(scanner.peek()):
+      discard scanner.advance()
+
+  var lit: Lit
+  lit = Lit(litKind: litFloat, floatLiteral: parseFloat(scanner.source[scanner.start..(scanner.current - 1)]))
+  scanner.addToken(NUMBER, lit)
+
+
 proc scanToken(scanner: Scanner) =
   let c: char = scanner.advance()
+  let nilLit: Lit = LIt(litKind: nilLit, nilLiteral: 0.0)
   case c
-  of '(': scanner.addToken(LEFT_PAREN)
-  of ')': scanner.addToken(RIGHT_PAREN)
-  of '{': scanner.addToken(LEFT_BRACE)
-  of '}': scanner.addToken(RIGHT_BRACE)
-  of ',': scanner.addToken(COMMA)
-  of '.': scanner.addToken(DOT)
-  of '-': scanner.addToken(MINUS)
-  of '+': scanner.addToken(PLUS)
-  of ';': scanner.addToken(SEMICOLON)
-  of '*': scanner.addToken(STAR)
-  of '!': scanner.addToken(if scanner.match('='): BANG_EQUAL else: BANG)
-  of '=': scanner.addToken(if scanner.match('='): EQUAL_EQUAL else: EQUAL)
-  of '<': scanner.addToken(if scanner.match('='): BANG_EQUAL else: LESS)
-  of '>': scanner.addToken(if scanner.match('='): LESS_EQUAL else: GREATER)
+  of '(': scanner.addToken(LEFT_PAREN, nilLit)
+  of ')': scanner.addToken(RIGHT_PAREN, nilLit)
+  of '{': scanner.addToken(LEFT_BRACE, nilLit)
+  of '}': scanner.addToken(RIGHT_BRACE, nilLit)
+  of ',': scanner.addToken(COMMA, nilLit)
+  of '.': scanner.addToken(DOT, nilLit)
+  of '-': scanner.addToken(MINUS, nilLit)
+  of '+': scanner.addToken(PLUS, nilLit)
+  of ';': scanner.addToken(SEMICOLON, nilLit)
+  of '*': scanner.addToken(STAR, nilLit)
+  of '!': scanner.addToken(if scanner.match('='): BANG_EQUAL else: BANG, nilLit)
+  of '=': scanner.addToken(if scanner.match('='): EQUAL_EQUAL else: EQUAL, nilLit)
+  of '<': scanner.addToken(if scanner.match('='): BANG_EQUAL else: LESS, nilLit)
+  of '>': scanner.addToken(if scanner.match('='): LESS_EQUAL else: GREATER, nilLit)
   of '/':
     if scanner.match('/'):
       # A comment goes until the end of the line.
       while scanner.peek() != '\n' and not scanner.isAtEnd():
         discard scanner.advance()
     else:
-      scanner.addToken(SLASH)
+      scanner.addToken(SLASH, nilLit)
+  of ' ', '\r', '\t':
+    discard
+    # ignore whitespace
+  of '\n':
+    scanner.line += 1
+  of '"':
+    scanner.string()
   else:
-    error(scanner.line, "Unexpected character.");
+    if scanner.isDigit(c):
+      scanner.number()
+    else:
+      error(scanner.line, "Unexpected character.");
 
 proc scanTokens*(scanner: Scanner): seq[Token] =
   while scanner.isAtEnd() == false:
     scanner.start = scanner.current
     scanner.scanToken()
 
-  scanner.tokens.add(Token(type: EOF, lexeme: "", literal: "", line: scanner.line))
+  let lit: Lit = Lit(litKind: nilLit, nilLiteral: 0.0)
+  scanner.tokens.add(Token(type: EOF, lexeme: "", literal: lit, line: scanner.line))
   return scanner.tokens
