@@ -1,19 +1,18 @@
 import token_type
 import strformat
 
-
 type LitKind* = enum
   litString,
   litFloat,
   nilLit
 
-type Lit* = ref object of RootObj
+type Lit* = object
   case litKind*: LitKind
   of litString: strLiteral*: string
   of litFloat: floatLiteral*: float
   of nilLit: nilLiteral*: float
 
-type Token* = ref object of RootObj
+type Token* = object
   `type`*: TokenType # wrap in ticks cuz type is keyword
   lexeme*: string
   literal*: Lit
