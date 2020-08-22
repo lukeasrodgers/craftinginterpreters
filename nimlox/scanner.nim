@@ -42,8 +42,9 @@ proc peek(scanner: Scanner): char =
     return scanner.source[scanner.current]
 
 proc peekNext(scanner: Scanner): char =
-  'c'
-
+  if scanner.current + 1 >= scanner.source.len:
+    return '\0'
+  return scanner.source[scanner.current + 1]
 
 proc string(scanner: Scanner) =
   while scanner.peek() != '"' and not scanner.isAtEnd():
