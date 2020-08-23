@@ -105,7 +105,7 @@ proc identifier(scanner: Scanner) =
   else:
     IDENTIFIER
 
-  let nilLit: Lit = LIt(litKind: nilLit, nilLiteral: 0.0)
+  let nilLit: Lit = Lit(litKind: nilLit, nilLiteral: 0.0)
   scanner.addToken(tt, nilLit)
 
 proc number(scanner: Scanner) =
@@ -127,7 +127,7 @@ proc number(scanner: Scanner) =
 
 proc scanToken(scanner: Scanner) =
   let c: char = scanner.advance()
-  let nilLit: Lit = LIt(litKind: nilLit, nilLiteral: 0.0)
+  let nilLit: Lit = Lit(litKind: nilLit, nilLiteral: 0.0)
   case c
   of '(': scanner.addToken(LEFT_PAREN, nilLit)
   of ')': scanner.addToken(RIGHT_PAREN, nilLit)
