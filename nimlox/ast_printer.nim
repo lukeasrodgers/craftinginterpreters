@@ -6,6 +6,7 @@ type
 
 method parenthesize(astPrinter: AstPrinter, name: string, exprs: varargs[Expr]): string
 
+# need to use --multimethods:on for this to work :/
 method print(astPrinter: AstPrinter, expr: Expr): string {.base.} =
   quit "to override"
 
@@ -18,12 +19,13 @@ method print(astPrinter: AstPrinter, expr: Grouping): string =
 method print(astPrinter: AstPrinter, expr: Literal): string =
   case expr.litKind
   of litString: return expr.strLiteral
-  of litFloat: return expr.floatLiteral.formatFloat()
+  of litFloat: return expr.floatLiteral.formatFloat() # NB! you can call strLiteral here and compiler will not complain
   of nilLit: return ""
 
 method print(astPrinter: AstPrinter, expr: Unary): string =
   astPrinter.parenthesize(expr.operator.lexeme, expr.right);
 
+# see note about multimethods
 method parenthesize(astPrinter: AstPrinter, name: string, exprs: varargs[Expr]): string =
   var s = "("
   s.add(name)
