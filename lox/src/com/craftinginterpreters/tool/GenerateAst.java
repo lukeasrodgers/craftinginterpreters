@@ -19,6 +19,11 @@ public class GenerateAst {
                 "Literal   : Object value",
                 "Unary     : Token operator, Expr right"
         ));
+
+        defineAst(outputDir, "Stmt", Arrays.asList(
+                "Expression : Expr expression",
+                "Print      : Expr expression"
+        ));
     }
 
     public static void defineAst(String outputDir, String baseName, List<String> types) throws IOException {
@@ -62,7 +67,7 @@ public class GenerateAst {
         // constructor
         writer.println("    " + className + "(" + fieldList + ") { ");
 
-        // store paramters in fields
+        // store parameters in fields
         String[] fields = fieldList.split(", ");
         for (String field : fields) {
             String name = field.split(" ")[1];
