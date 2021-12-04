@@ -50,6 +50,11 @@ class RPNPrinter implements Expr.Visitor<String> {
         return rpnify(expr.name.lexeme);
     }
 
+    @Override
+    public String visitAssignExpr(Expr.Assign expr) {
+        return rpnify(expr.name.lexeme, expr);
+    }
+
     private String rpnify(String name, Expr... exprs) {
         StringBuilder builder = new StringBuilder();
 
