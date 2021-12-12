@@ -6,14 +6,25 @@ import javax.management.RuntimeErrorException;
 import java.nio.DoubleBuffer;
 import java.util.List;
 
-public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
+public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Object> {
 
     private Environment environment = new Environment();
 
     void interpret(List<Stmt> statements) {
         try {
             for (Stmt statement : statements) {
-                execute(statement);
+                Object value = execute(statement);
+            }
+        } catch (RuntimeError error) {
+            Lox.runtimeError(error);
+        }
+    }
+
+    void repl(List<Stmt> statements) {
+        try {
+            for (Stmt statement : statements) {
+                Object value = execute(statement);
+                System.out.println(stringify(value));
             }
         } catch (RuntimeError error) {
             Lox.runtimeError(error);
@@ -34,8 +45,8 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
         return expr.accept(this);
     }
 
-    private void execute(Stmt statement) {
-        statement.accept(this);
+    private Object execute(Stmt statement) {
+        return statement.accept(this);
     }
 
     public Void executeBlock(List<Stmt> statements, Environment environment) {
@@ -58,9 +69,9 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
     }
 
     @Override
-    public Void visitExpressionStmt(Stmt.Expression stmt) {
-        evaluate(stmt.expression);
-        return null;
+    public Object visitExpressionStmt(Stmt.Expression stmt) {
+        Object value = evaluate(stmt.expression);
+        return value;
     }
 
     @Override
