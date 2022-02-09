@@ -60,6 +60,9 @@ class RPNPrinter implements Expr.Visitor<String> {
         return rpnify(expr.operator.lexeme, expr.left, expr.right);
     }
 
+    @Override
+    public String visitCallExpr(Expr.Call expr) { return rpnify("function", expr); }
+
     private String rpnify(String name, Expr... exprs) {
         StringBuilder builder = new StringBuilder();
 
