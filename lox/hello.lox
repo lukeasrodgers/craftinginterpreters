@@ -1,0 +1,6 @@
+print("Hi");
+fun sayHi(f, l) {
+  print("Hi " + f + " " + l);
+}
+
+sayHi("luke", "rodgers");
