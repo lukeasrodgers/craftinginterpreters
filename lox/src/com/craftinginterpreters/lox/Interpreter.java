@@ -1,7 +1,5 @@
 package com.craftinginterpreters.lox;
 
-import com.sun.tools.javac.comp.Env;
-
 import javax.management.RuntimeErrorException;
 import java.nio.DoubleBuffer;
 import java.util.ArrayList;

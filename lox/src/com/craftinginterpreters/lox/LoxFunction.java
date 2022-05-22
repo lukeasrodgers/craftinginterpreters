@@ -1,7 +1,5 @@
 package com.craftinginterpreters.lox;
 
-import com.sun.tools.javac.comp.Env;
-
 import java.util.List;
 
 public class LoxFunction implements LoxCallable {

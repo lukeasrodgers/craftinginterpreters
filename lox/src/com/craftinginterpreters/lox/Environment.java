@@ -1,7 +1,5 @@
 package com.craftinginterpreters.lox;
 
-import com.sun.tools.javac.comp.Env;
-
 import java.util.HashMap;
 import java.util.Map;
 
