@@ -62,7 +62,7 @@ abstract class Expr {
     final List<Expr> arguments;
   }
   static class Get extends Expr {
-    Get(Expr object, Topken name) { 
+    Get(Expr object, Token name) {
       this.object = object;
       this.name = name;
     }
@@ -73,7 +73,7 @@ abstract class Expr {
     }
 
     final Expr object;
-    final Topken name;
+    final Token name;
   }
   static class Grouping extends Expr {
     Grouping(Expr expression) { 
