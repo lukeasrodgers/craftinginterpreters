@@ -1,0 +1,4 @@
+var x = 1;
+print(x);
+// expet error
+print(this);
