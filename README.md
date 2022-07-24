@@ -17,3 +17,5 @@ To use the AST generator:
 2. `java com.craftinginterpreters.tool.GenerateAst ../../../src/com/craftinginterpreters/lox`
 
 Not sure why it has to be precisely from this folder, "cuz Java".
+
+Reference java code can be found here https://github.com/munificent/craftinginterpreters/
