@@ -1,0 +1,21 @@
+class Foo {
+  init() {
+    this.bar = 1;
+  }
+}
+
+var f = Foo();
+print(f.bar);
+
+class Bar {
+  init(x, y) {
+    this.x = x;
+    this.y = y;
+  }
+  printCoords() {
+    print("coords are (" +this.x+ ", " +this.y+ ")");
+  }
+}
+
+var b = Bar(2,3);
+b.printCoords();
