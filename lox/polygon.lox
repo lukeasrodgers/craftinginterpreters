@@ -1,0 +1,17 @@
+class Polygon {
+  type() {
+    print "define me!";
+  }
+}
+
+class Square < Polygon {
+  type() {
+    print "Square";
+  }
+}
+
+var p = Polygon();
+p.type();
+
+var s = Square();
+s.type();
