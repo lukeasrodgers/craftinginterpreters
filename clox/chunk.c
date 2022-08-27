@@ -7,6 +7,7 @@ void initChunk(Chunk* chunk) {
     chunk->count = 0;
     chunk->capacity = 0;
     chunk->code = NULL;
+    initValueArray(&chunk->constants);
 }
 
 void freeChunk(Chunk* chunk) {
@@ -23,4 +24,9 @@ void writeChunk(Chunk* chunk, uint8_t byte) {
 
     chunk->code[chunk->count] = byte;
     chunk->count++;
+}
+
+int addConstant(Chunk* chunk, Value value) {
+    writeValueArray(&chunk->constants, value);
+    return chunk->constants.count - 1;
 }
