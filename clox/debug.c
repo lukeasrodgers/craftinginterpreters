@@ -2,8 +2,11 @@
 
 #include "debug.h"
 #include "value.h"
+#include "rle.h"
 
 void disassembleChunk(Chunk* chunk, const char* name) {
+    // print_rle_decoded(chunk->encoded);
+    // print_rle(chunk->encoded);
     printf("== %s ==\n", name);
 
     for (int offset = 0; offset < chunk->count;) {
@@ -26,10 +29,10 @@ static int constantInstruction(const char* name, Chunk* chunk, int offset) {
 
 int disassembleInstruction(Chunk* chunk, int offset) {
     printf("%04d ", offset);
-    if (offset > 0 && chunk->lines[offset] == chunk->lines[offset - 1]) {
+    if (offset > 0 && getLine(chunk, offset) == getLine(chunk, (offset - 1))) {
         printf("   |  ");
     } else {
-        printf("%4d ", chunk->lines[offset]);
+        printf("%4d ", getLine(chunk, offset));
     }
 
     uint8_t instruction = chunk->code[offset];
