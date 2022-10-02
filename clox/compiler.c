@@ -87,11 +87,15 @@ static uint8_t makeConstant(Value value) {
 }
 
 static void emitConstant(Value value) {
-    emitBytes(OP_CONSTANT, makeConstant(value);)
+    emitBytes(OP_CONSTANT, makeConstant(value));
 }
 
 static void endCompiler() {
     emitReturn();
+}
+
+static void expression() {
+
 }
 
 static void grouping() {
@@ -104,9 +108,6 @@ static void number() {
     emitConstant(value);
 }
 
-static void expression() {
-
-}
 
 bool compile(const char* source, Chunk* chunk) {
     initScanner(source);
