@@ -20,6 +20,7 @@
         "algorithm": "c",
         "functional": "c",
         "iterator": "c",
-        "memory": "c"
+        "memory": "c",
+        "table.h": "c"
     }
 }
