@@ -21,6 +21,7 @@
         "functional": "c",
         "iterator": "c",
         "memory": "c",
-        "table.h": "c"
+        "table.h": "c",
+        "value.h": "c"
     }
 }
