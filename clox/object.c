@@ -37,7 +37,7 @@ static uint32_t hashString(const char* key, int length) {
 
 ObjString* takeString(char* chars, int length) {
     uint32_t hash = hashString(chars, length);
-    return allocateString(chars, length);
+    return allocateString(chars, length, hash);
 }
 
 ObjString* copyString(const char* chars, int length) {
