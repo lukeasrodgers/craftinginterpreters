@@ -5,3 +5,6 @@ main: main.c memory.c chunk.c debug.c value.c rle.c vm.c compiler.c scanner.c ob
 test:
 	./a.out print.lox
 	./a.out globals.lox
+	./a.out if.lox
+	./a.out for.lox
+	./a.out breakfast.lox
