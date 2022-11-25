@@ -79,7 +79,7 @@ InterpretResult interpret(const char* source) {
     initChunk(&chunk);
 
     if (!compile(source, &chunk)) {
-        free(&chunk);
+        freeChunk(&chunk);
         return INTERPRET_COMPILE_ERROR;
     }
 
