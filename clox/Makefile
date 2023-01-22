@@ -9,3 +9,4 @@ test:
 	./a.out for.lox
 	./a.out breakfast.lox
 	./a.out fundec.lox
+	./a.out outer.lox
