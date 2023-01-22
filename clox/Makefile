@@ -10,3 +10,4 @@ test:
 	./a.out breakfast.lox
 	./a.out fundec.lox
 	./a.out outer.lox
+	./a.out global-closures.lox
