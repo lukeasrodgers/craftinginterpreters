@@ -11,3 +11,5 @@ test:
 	./a.out fundec.lox
 	./a.out outer.lox
 	./a.out global-closures.lox
+	./a.out global-closures.lox
+	./a.out brioche.lox
