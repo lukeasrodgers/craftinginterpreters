@@ -10,7 +10,7 @@
 #endif
 
 #define GC_HEAP_GROW_FACTOR 2
-#define DEBUG_STRESS_GC 1
+// define DEBUG_STRESS_GC 1
 
 void* reallocate(void* pointer, size_t oldSize, size_t newSize) {
     vm.bytesAllocated += newSize - oldSize;
