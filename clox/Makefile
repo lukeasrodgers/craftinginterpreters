@@ -14,3 +14,4 @@ test:
 	./a.out global-closures.lox
 	./a.out brioche.lox
 	./a.out pair.lox
+	./a.out bound.lox
