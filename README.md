@@ -1,3 +1,5 @@
+# jlox
+
 How to run lox java stuff
 
 1. `cd lox/out/production/lox`
@@ -19,3 +21,9 @@ To use the AST generator:
 Not sure why it has to be precisely from this folder, "cuz Java".
 
 Reference java code can be found here https://github.com/munificent/craftinginterpreters/
+
+
+# clox
+
+`make` to build
+`make test` to run tests using a bunch of sample lox scripts
