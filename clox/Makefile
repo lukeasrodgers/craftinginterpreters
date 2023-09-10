@@ -15,3 +15,4 @@ test:
 	./a.out brioche.lox
 	./a.out pair.lox
 	./a.out bound.lox
+	./a.out initializer.lox
