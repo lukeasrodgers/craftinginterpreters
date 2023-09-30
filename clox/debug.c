@@ -138,6 +138,8 @@ int disassembleInstruction(Chunk* chunk, int offset) {
             return simpleInstruction("OP_DIVIDE", offset);
         case OP_NOT:
             return simpleInstruction("OP_NOT", offset);
+        case OP_INHERIT:
+            return simpleInstruction("OP_INHERIT", offset);
         case OP_METHOD:
             return constantInstruction("OP_METHOD", chunk, offset);
         default:
