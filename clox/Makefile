@@ -17,3 +17,4 @@ test:
 	./a.out bound.lox
 	./a.out initializer.lox
 	./a.out inherit.lox
+	./a.out super-test.lox
